@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+	</head>
+
+	<body>
+		<button id="btn1">起始正向运动</button>
+		<button id="btn2">起始逆向运动</button>
+		<button id="btn3">暂停</button>
+		<button id="reset">还原</button>
+		<div id="result"></div>
+		<div id="backup" style="height: 298px;width:298px;border-bottom:1px solid black;border-radius:50%;position:absolute;top:50px;left:50px;">
+			<div id="test" style="height: 40px;width: 40px;background-color:pink;position:relative;left:130px;top:280px;border-radius:50%"></div>
+		</div>
+		<script src="../js/pendulMove.js"></script>
+		<script>
+			reset.onclick = function() {
+				history.go();
+			}
+			btn1.onclick = function() {
+				pendulMove({
+					obj: test,
+					r: 150,
+					x0: test.x0,
+					y0: test.y0,
+					a: test.a,
+					num: test.num
+				});
+				debugger
+			}
+			btn2.onclick = function() {
+				pendulMove({
+					obj: test,
+					r: 150,
+					dir: '-',
+					x0: test.x0,
+					y0: test.y0,
+					a: test.a,
+					num: test.num
+				});
+			}
+			btn3.onclick = function() {
+				clearInterval(test.timer);
+				test.timer = 0;
+			}
+		</script>
+	</body>
+
+</html>

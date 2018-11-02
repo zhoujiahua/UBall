@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.box {
+				width: 100;
+				min-height: 100vh;
+				position: relative;
+			}
+			
+			.wA,
+			.wB {
+				display: block;
+				height: 20px;
+				width: 20px;
+				background: red;
+				position: absolute;
+				left: 0;
+				top: 0;
+				border-radius: 20px;
+			}
+			
+			.wB {
+				top: 300px;
+				left: 600px;
+			}
+			
+			.wire {
+				position: absolute;
+				margin: 10px;
+				height: 2px;
+				width: 2px;
+				background-color: blue;
+				left: 0;
+				top: 0;
+			}
+			
+			#book {
+				margin: 600px;
+				width: 600px;
+				/*height: 0px;*/
+				border-bottom: 1px solid #000000;
+				/*-webkit-transform: rotate(-45deg);*/
+				/*Safari 4+,Google Chrome 1+  */
+				/*-moz-transform: rotate(-45deg);*/
+				/*Firefox 3.5+*/
+				/*filter: progid:DXImageTransform.Microsoft.BasicImage(Rotation=-0.45);*/
+				/*transform: rotate(-45deg);*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="head"></div>
+		<div class="box">
+			<a href="javascript:;" class="wA"></a>
+			<a href="javascript:;" class="wB"></a>
+			<div class="ok"></div>
+			<div class="pc"></div>
+			<button type="button" class="stop">暂停</button>
+			<button type="button" class="hd">切换</button>
+		</div>
+
+		<script src="../js/Jquery_v1.9.0.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				var timer = null;
+				var d = 90;
+				var n = 1;
+				var flag = 1;
+
+				$(".hd").on("click", function() {
+					if(n === 1) {
+						n = 2;
+						console.log(n)
+					} else if(n === 2) {
+						n = 1;
+						console.log(n)
+					}
+				})
+
+				setInterval(function() {
+					switch(n) {
+						case 1:
+							d++
+							break;
+						case 2:
+							d--
+							break;
+					}
+					
+					$(".head").html('<div id="book" style="transform: rotate(' + d + 'deg);" ></div>')
+
+				}, 10)
+				/*for(var i = 0; i < 90; i++) {
+					
+				}*/
+
+				$(".box2").on("click", function() {
+					/*var l = 8,
+						t = 8,
+						len = lengthNum(300, 8),
+						list = '';
+					for(var i = 0; i < len; i++) {
+						list += '<div class="wire" style="left:' + l * i + 'px;top:' + t * i + 'px;" ></div>';
+					}
+					console.log(list);*/
+					//$(".ok").html(list);
+					getTimer(timer);
+					$(".wA").animate({
+						"left": 600,
+						"top": 300
+					}, 5000)
+
+				})
+
+				function getTimer(tem) {
+					tem = setInterval(function() {
+						var off = $(".wA").offset();
+						console.log("left:" + parseFloat(off.left) + "=" + "top:" + parseFloat(off.top));
+						$(".pc").append('<div class="wire" style="left:' + parseFloat(off.left) + 'px;top:' + parseFloat(off.top) + 'px;" ></div>');
+					})
+				}
+
+				$(".stop").on("click", function() {
+					timer = clearInterval(timer);
+					getTimer(timer);
+				})
+
+			})
+
+			//循环次数处理
+			function lengthNum(a, b) {
+				var d;
+				if(a % b > 0) {
+					d = parseInt(a / b) + 1;
+				} else {
+					d = parseInt(a / b);
+				}
+				return d;
+			}
+
+			function getBigFactor(a, b) {
+				if(b == 0) {
+					return a;
+				}
+				return getBigFactor(b, a % b)
+
+			}
+		</script>
+	</body>
+
+</html>

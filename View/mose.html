@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.coord-box {
+				width: 100%;
+				min-height: 100%;
+				min-height: 100vh;
+				position: relative;
+			}
+			
+			.coords {
+				width: 100%;
+				min-height: 100vh;
+				display: flex;
+				background: #F2F1D7;
+				position: relative;
+			}
+			
+			.coord {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			
+			.circle-a,
+			.circle-b {
+				display: block;
+				background-color: green;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			
+			.circle-a,
+			.circle-b {
+				width: 60px;
+				height: 60px;
+				border-radius: 60px;
+			}
+			
+			.wire {
+				display: inline-block;
+				position: absolute;
+				border: 2px solid red;
+				border-radius: 2px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="coord-box">
+			<div id="coords" class="coords">
+				<div id="coord" class="coord"></div>
+				<div class="circle-group">
+					<a href="javascript:;" class="circle-a" id="circleA"></a>
+					<a href="javascript:;" class="circle-b" id="circleB"></a>
+				</div>
+			</div>
+		</div>
+		<script src="../js/Jquery_v1.9.0.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				var carA = $(".circle-a"),
+					carB = $(".circle-b"),
+					thisA = getSpeenNum("circleA"),
+					thisB = getSpeenNum("circleB"),
+					leftA = Math.floor((thisA.cW - thisA.caW) * 100 / 2) / 100,
+					topA = Math.floor(((thisA.cH / 4) - thisA.caH) * 100 / 2) / 100,
+					leftB = Math.floor((thisB.cW - thisB.caW) * 100 / 2) / 100,
+					topB = Math.floor((thisB.cH / 4) * 2 - thisB.caH);
+				carA.css({
+					"left": leftA,
+					"top": topA
+				});
+				carB.css({
+					"left": leftB,
+					"top": topB
+				});
+
+				window.onresize = function() {
+					var carA = $(".circle-a"),
+						carB = $(".circle-b"),
+						thisA = getSpeenNum("circleA"),
+						thisB = getSpeenNum("circleB"),
+						leftA = Math.floor((thisA.cW - thisA.caW) * 100 / 2) / 100,
+						topA = Math.floor(((thisA.cH / 4) - thisA.caH) * 100 / 2) / 100,
+						leftB = Math.floor((thisB.cW - thisB.caW) * 100 / 2) / 100,
+						topB = Math.floor((thisB.cH / 4) * 2 - thisB.caH);
+					carA.css({
+						"left": leftA,
+						"top": topA
+					});
+					carB.css({
+						"left": leftB,
+						"top": topB
+					});
+				}
+
+				$(window).on("resize", function() {
+					console.log("Resize");
+				})
+
+				carA.on("click", function() {
+					carA.animate({
+						"left": leftB,
+						"top": topB - carA.height()
+					}, 1000, function() {
+						carB.animate({
+							"left": leftB,
+							"top": topB + 450
+						}, 500, function() {
+							carA.animate({
+								"left": leftA,
+								"top": topA
+							}, 600, function() {
+								carB.animate({
+									"left": leftB,
+									"top": topB
+								}, 600);
+							});
+
+						});
+					});
+
+				})
+
+				getCoordInDocumentExample();
+
+			})
+
+			//获取鼠标参数
+			function getCoordInDocumentExample() {
+				var coords = document.getElementById("coords");
+				coords.onmousemove = function(e) {
+					var pointer = getCoordInDocument(e),
+						coord = document.getElementById("coord");
+					coord.style.left = pointer.x + "px";
+					coord.style.top = pointer.y + "px";
+					//coord.style.width = 110 + "px";
+					coord.style.padding = 5 + "px";
+					coord.style.border = "1px solid #336699";
+					coord.innerHTML = 'X:' + pointer.x + ', Y:' + pointer.y;
+				}
+			}
+
+			//获取屏幕坐标
+			function getCoordInDocument(e) {
+				e = e || window.event;
+				var x = e.pageX || (e.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft)),
+					y = e.pageY || (e.clientY + (document.documentElement.scrollTop || document.body.scrollTop));
+				return {
+					'x': x,
+					'y': y
+				};
+			}
+
+			//获取屏幕参数
+			function getSpeenNum(ele) {
+				var el = document.getElementById(ele),
+					cW = document.documentElement.clientWidth,
+					cH = document.documentElement.clientHeight,
+					caW = el.offsetWidth,
+					caH = el.offsetHeight;
+
+				return {
+					"cW": cW,
+					"cH": cH,
+					"caW": caW,
+					"caH": caH
+				}
+			}
+		</script>
+
+	</body>
+
+</html>

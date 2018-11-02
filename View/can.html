@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style type="text/css">
+			.canvas {
+				display: block;
+				border: 1px solid #2a2a2a;
+				margin: 50 auto;
+				position: absolute;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<canvas id="canvas" class="canvas"></canvas>
+			<h1>我是地图</h1>
+		</div>
+		<script src="../js/Jquery_v1.9.0.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var canvas = document.getElementById("canvas");
+			canvas.width = 1200;
+			canvas.height = 800; //通过这两种方式也可以设置canvas的大小；
+			if(canvas.getContext) {
+				var context = canvas.getContext("2d");
+				context.moveTo(0, 0);
+				context.lineTo(300, 600);
+				context.lineWidth = 2;
+				context.strokeStyle = "red";
+				context.stroke();
+
+			} else {
+				alert("浏览器不支持容canvas！");
+			}
+		</script>
+	</body>
+
+</html>

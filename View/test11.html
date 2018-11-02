@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.box {
+				width: 100;
+				min-height: 100vh;
+				position: relative;
+			}
+			
+			.wA,
+			.wB {
+				display: block;
+				height: 20px;
+				width: 20px;
+				background: red;
+				position: absolute;
+				left: 0;
+				top: 0;
+				border-radius: 20px;
+			}
+			
+			.wB {
+				top: 300px;
+				left: 300px;
+			}
+			
+			.wire {
+				position: absolute;
+				margin: 10px;
+				height: 2px;
+				width: 2px;
+				background-color: blue;
+				left: 0;
+				top: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box">
+			<a href="javascript:;" class="wA"></a>
+			<a href="javascript:;" class="wB"></a>
+			<div class="ok"></div>
+		</div>
+
+		<script src="../js/Jquery_v1.9.0.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(".box").on("click", function() {
+					var l = 8,
+						t = 8,
+						len = lengthNum(300, 8),
+						list = '';
+					for(var i = 0; i < len; i++) {
+						list += '<div class="wire" style="left:' + l * i + 'px;top:' + t * i + 'px;" ></div>';
+					}
+					console.log(list);
+					$(".ok").html(list);
+				})
+			})
+
+			//循环次数处理
+			function lengthNum(a, b) {
+				var d;
+				if(a % b > 0) {
+					d = parseInt(a / b) + 1;
+				} else {
+					d = parseInt(a / b);
+				}
+				return d;
+			}
+
+			function getBigFactor(a, b) {
+				if(b == 0) {
+					return a;
+				}
+				return getBigFactor(b, a % b)
+
+			}
+		</script>
+	</body>
+
+</html>

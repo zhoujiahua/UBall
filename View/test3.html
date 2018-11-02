@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			/*.box {
+				width: 1200px;
+				margin: 0 auto;
+				margin-top: 200px;
+				position: relative;
+			}*/
+			
+			body {
+				position: relative;
+			}
+			
+			.node {
+				display: block;
+				height: 50px;
+				width: 50px;
+				border-radius: 50px;
+				background-color: green;
+				position: absolute;
+			}
+		</style>
+
+	</head>
+
+	<body>
+
+		<div class="box">
+			<a href="javascript:;" class="node"></a>
+		</div>
+
+		<script src="../js/Jquery_v1.9.0.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+				var el = $(".node");
+				var param = getData(el);
+
+				$(window).resize(function() {
+					param = getData(el);
+					el.css({
+						"left": param.countW,
+						"top": param.countH
+					});
+				})
+
+				el.css({
+					"left": param.countW,
+					"top": param.countH
+				});
+
+				el.on("click", function() {
+					shake({
+						"ele": el
+					})
+				});
+
+			})
+
+			//抖动函数
+			function shake(data) {
+				var el = data.ele,
+					initVal = data.num || 950,//定位初始尺寸
+					count = data.count || 6, //次数
+					rad = data.rad || 300, //弧度
+					time = data.time || 30; //时间
+		
+				for(var i = 0; i <= count; i++) {
+					if(i === 0) {
+						el.removeAttr().animate({
+							left: (initVal -= rad)
+						}, time);
+					} else if(i > 0 && i < count) {
+						el.removeAttr().animate({
+							left: (initVal += rad * 2)
+						}, time).animate({
+							left: (initVal -= rad * 2)
+						}, time)
+
+					} else if(i === count) {
+						el.removeAttr().animate({
+							left: (initVal += rad)
+						}, time);
+					}
+
+				}
+			}
+
+			function getData(el) {
+				var docW = document.documentElement.clientWidth,
+					docH = document.documentElement.clientHeight,
+					boxW = el.outerWidth(),
+					boxH = el.outerHeight(),
+					countW = Math.round((docW - boxW) / 2),
+					countH = Math.round((docH - boxH) / 2);
+				return {
+					"docW": docW,
+					"docH": docH,
+					"boxW": boxW,
+					"boxH": boxH,
+					"countW": countW,
+					"countH": countH
+				};
+			}
+		</script>
+	</body>
+
+</html>

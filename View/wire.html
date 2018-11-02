@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+	</head>
+
+	<body>
+
+		<script type="text/javascript">
+			var dot = new Array();
+			document.onmousedown = function(a) {
+				//若div存在，则删除
+				if(document.getElementById('line_div')) {
+					var clearDiv = document.getElementById("line_div");
+					clearDiv.parentNode.removeChild(clearDiv);
+				}
+				//按下时创建一个事件
+				if(!a) a = window.event;
+				//获取x轴、y轴坐标
+				var x = a.clientX;
+				var y = a.clientY;
+				//当数组长度大于等于4时，清空数组
+				if(dot.length >= 4) dot.splice(0, 4);
+				//将x、y添加到数组中,数组中保存了两组坐标值，相当于页面上的A(x1,y1)、B(x2,y2)两点
+				dot.push(x, y);
+				//当数组长度为4时，画线。
+				if(dot.length == 4) {
+					//计算div的长和宽
+					var width = Math.abs(dot[0] - dot[2]);
+					var height = Math.abs(dot[1] - dot[3]);
+					//在页面上定位div左上角的具体位置
+					var left = dot[0] - dot[2] < 0 ? dot[0] : dot[2];
+					var top = dot[1] - dot[3] < 0 ? dot[1] : dot[3];
+					//创建div
+					var div = document.createElement("div");
+					div.innerHTML = ' <div id="line_div" style="width:' + width + 'px;height:' + height + 'px;position:absolute;visibility:visible;left:' + left + 'px;top:' + top + 'px;border-left:1px solid #cdcdcd;border-top:1px solid #cdcdcd;"></div>';
+					document.body.appendChild(div);
+				}
+			}
+		</script>
+	</body>
+
+</html>

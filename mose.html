@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.main {
+				position: relative;
+			}
+			.panel-group{
+				position: absolute;
+				bottom: 50px;
+				right: 50px;
+				cursor: pointer;
+				z-index: 999;
+			}
+			
+			.coord-box {
+				width: 100%;
+				min-height: 100%;
+				min-height: 100vh;
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.coords {
+				width: 100%;
+				min-height: 100vh;
+				display: flex;
+				background: #F2F1D7;
+				position: relative;
+			}
+			
+			.coord {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			
+			.circle-a,
+			.circle-b {
+				display: block;
+				background-color: green;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			
+			.circle-a,
+			.circle-b {
+				width: 60px;
+				height: 60px;
+				border-radius: 60px;
+				position: absolute;
+			}
+			
+			.wire {
+				display: inline-block;
+				position: absolute;
+				border: 2px solid red;
+				border-radius: 2px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="header"></div>
+			<div class="main">
+				<div class="coord-box">
+					<div id="coords" class="coords">
+						<div id="coord" class="coord"></div>
+						<div class="circle-group">
+							<a href="javascript:;" class="circle-a" id="circleA"></a>
+							<a href="javascript:;" class="circle-b" id="circleB"></a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="panel-group">
+					<button type="button" class="btn-vertical" >垂直碰撞</button>
+				</div>
+			</div>
+			<div class="header"></div>
+		</div>
+
+		<script src="js/Jquery_v1.9.0.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				getCoordInDocumentExample();
+				var carA = $(".circle-a"),
+					carB = $(".circle-b"),
+					carBox = $(".coord-box"),
+					btnVertical = $(".btn-vertical"),
+					thisA = getSpeenNum("circleA"),
+					thisB = getSpeenNum("circleB"),
+					leftA = Math.floor((thisA.cW - thisA.caW) * 100 / 2) / 100,
+					topA = Math.floor(((thisA.cH / 4) - thisA.caH) * 100 / 2) / 100,
+					leftB = Math.floor((thisB.cW - thisB.caW) * 100 / 2) / 100,
+					topB = Math.floor((thisB.cH / 4) * 2 - thisB.caH);
+				carA.css({
+					"left": leftA,
+					"top": topA
+				});
+				carB.css({
+					"left": leftB,
+					"top": topB
+				});
+
+				window.onresize = function() {
+					var carA = $(".circle-a"),
+						carB = $(".circle-b"),
+						carBox = $(".circle-group"),
+						btnVertical = $("btn-vertical"),
+						thisA = getSpeenNum("circleA"),
+						thisB = getSpeenNum("circleB"),
+						leftA = Math.floor((thisA.cW - thisA.caW) * 100 / 2) / 100,
+						topA = Math.floor(((thisA.cH / 4) - thisA.caH) * 100 / 2) / 100,
+						leftB = Math.floor((thisB.cW - thisB.caW) * 100 / 2) / 100,
+						topB = Math.floor((thisB.cH / 4) * 2 - thisB.caH);
+					carA.css({
+						"left": leftA,
+						"top": topA
+					});
+					carB.css({
+						"left": leftB,
+						"top": topB
+					});
+				}
+				
+				
+				btnVertical.on("click", function() {
+					carA.animate({
+						"left": leftB,
+						"top": topB - carA.height()
+					}, 1000, function() {
+						carB.animate({
+							"left": leftB,
+							"top": thisB.cH - thisB.caH
+						}, 500, function() {
+							carA.animate({
+								"left": leftA,
+								"top": topA
+							}, 600, function() {
+								carB.animate({
+									"left": leftB,
+									"top": topB
+								}, 600);
+							});
+
+						});
+					});
+
+				})
+
+				carBox.on("click", function(e) {
+					var pointer = getCoordInDocument(e);
+					if(pointer.x < Math.floor(thisA.cW * 100 / 2) / 100) {
+						carA.stop().animate({
+							"left": 0,
+							"top": pointer.y,
+						}, function() {
+							carA.stop().animate({
+								"left": leftA,
+								"top": topA,
+							})
+						})
+					} else {
+						carA.stop().animate({
+							"left": thisA.cW - thisA.caW,
+							"top": pointer.y,
+						}, function() {
+							carA.stop().animate({
+								"left": leftA,
+								"top": topA
+							})
+						})
+					}
+
+				})
+
+			})
+			
+			//获取鼠标参数
+			function getCoordInDocumentExample() {
+				var coords = document.getElementById("coords");
+				coords.onmousemove = function(e) {
+					var pointer = getCoordInDocument(e),
+						coord = document.getElementById("coord");
+					coord.style.left = pointer.x + "px";
+					coord.style.top = pointer.y + "px";
+					//coord.style.width = 110 + "px";
+					coord.style.padding = 5 + "px";
+					coord.style.border = "1px solid #336699";
+					coord.innerHTML = 'X:' + pointer.x + ', Y:' + pointer.y;
+				}
+			}
+
+			//获取屏幕坐标
+			function getCoordInDocument(e) {
+				var el = e || window.event,
+					mouseCoords = {};
+				mouseCoords.x = el.pageX || (el.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft));
+				mouseCoords.y = el.pageY || (el.clientY + (document.documentElement.scrollTop || document.body.scrollTop));
+				return mouseCoords;
+			}
+
+			//获取屏幕参数
+			function getSpeenNum(ele) {
+				var el = document.getElementById(ele),
+					cW = document.documentElement.clientWidth,
+					cH = document.documentElement.clientHeight,
+					caW = el.offsetWidth,
+					caH = el.offsetHeight;
+
+				return {
+					"cW": cW,
+					"cH": cH,
+					"caW": caW,
+					"caH": caH
+				}
+			}
+		</script>
+
+	</body>
+
+</html>

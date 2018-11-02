@@ -1,0 +1,105 @@
+@charset "utf-8";
+
+/*Home CSS*/
+
+html,
+body {
+	width: 100%;
+	min-height: 100%;
+}
+
+.wrapper {
+	width: 100%;
+	position: relative;
+	overflow: hidden;
+}
+.canvas{
+	/*border: 1px solid #C81623;*/
+	display: block;
+	position: absolute;
+	z-index: 1024;
+}
+.main {
+	width: 100%;
+	position: relative;
+	background: #2a2a2a;
+}
+
+.max-ball,
+.min-ball {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+}
+
+.max-ball {
+	width: 80px;
+	height: 80px;
+	-webkit-border-radius: 80px;
+	-moz-border-radius: 80px;
+	border-radius: 80px;
+	background-color: yellow;
+	/*background: url(../images/yy.png) no-repeat center center;*/
+	/*background-size: 100% 100%;*/
+}
+
+.min-ball {
+	width: 20px;
+	height: 20px;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	background-color: yellow;
+	/*background: url(../images/yy.png) no-repeat center center;*/
+	/*background-size: 100% 100%;*/
+}
+
+.btn-group {
+	position: fixed;
+	bottom: 150px;
+	right: 50px;
+	z-index: 1200;
+}
+
+.btn-group button {
+	padding: 4px 8px;
+	cursor: pointer;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background-color: #5bc0de;
+	color: #FFFFFF;
+	filter: Alpha(opacity=70);
+	opacity: 0.7;
+	/*transition: transform .3s ease-in-out;*/
+}
+
+.btn-group button:hover {
+	filter: Alpha(opacity=90);
+	opacity: 0.9;
+	transform: rotate(-360deg);
+	transition: transform .3s ease-in-out;
+}
+
+.box {
+	border: 1px #FF0000 solid;
+	position: absolute;
+	
+}
+
+.coord {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 999;
+}
+
+.cr-wire {
+	display: inline-block;
+	position: absolute;
+	border: 2px solid red;
+	border-radius: 2px;
+	z-index: 888;
+}
+

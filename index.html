@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Home</title>
+
+		<!--CSS-->
+		<link rel="stylesheet" type="text/css" href="plugs/font_awesome/css/font-awesome.css">
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="css/home.css" />
+
+		<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+		<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+		<!--[if lt IE 9]>
+	      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+	      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+	    <![endif]-->
+
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<!--heder-->
+			<div class="header">
+				<div class="btn-group">
+					<button type="button" id="btn1">起始正向摆动</button>
+					<button type="button" id="btn2">起始逆向摆动</button>
+					<button type="button" id="btn3">摆动暂停</button>
+					<button type="button" id="reset">摆动还原</button>
+					<button type="button" id="abc" title="面板分离"> PS：<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> </button>
+					<button type="button" class="switchover" id="btnE"><i class="fa fa-refresh" aria-hidden="true"></i>  切换</button>
+					<button type="button" class="shake-btn" id="btnF"><i class="fa fa-magnet" aria-hidden="true"></i>  抖动</button>
+					<button type="button" class="clockwise" id="btnA"><i class="fa fa-rotate-left" aria-hidden="true"></i>  顺时针</button>
+					<button type="button" class="anticlockwise" id="btnB"><i class="fa fa-rotate-right" aria-hidden="true"></i> 逆时针</button>
+					<button type="button" class="stop" id="btnC"><i class="fa fa-stop-circle-o" aria-hidden="true"></i> 停止</button>
+					<button type="button" class="resetoo" id="btnD"><i class="fa fa-refresh" aria-hidden="true"></i> 重置</button>
+				</div>
+			</div>
+
+			<!--main-->
+			<div class="main" id="btnClick">
+				<!--Canvas-->
+				<canvas id="canvas" class="canvas"></canvas>
+				<div id="coord" class="coord"></div>
+				<div id="result"></div>
+				<div class="main-box">
+					<a href="javascript:;" id="ballA" class="max-ball"></a>
+					<a href="javascript:;" id="ballB" class="min-ball"></a>
+				</div>
+				<div class="panel-boxA"></div>
+				<div class="panel-boxB"></div>
+				<div class="panel-boxC" id="panelBoxC"></div>
+			</div>
+			<!--footer-->
+			<div class="footer"></div>
+		</div>
+
+		<!--JS-->
+		<script src="plugs/feature/feature.js" type="text/javascript"></script>
+		<script src="js/Jquery_v1.9.0.js" type="text/javascript"></script>
+		<script src="js/common.js" type="text/javascript"></script>
+		<script src="js/home.js" type="text/javascript"></script>
+		<script src="js/index.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			/*
+			 * obj 运动对象
+			 * r 运动半径
+			 * x0 圆心坐标X
+			 * y0 圆心坐标Y
+			 * a 当前夹角
+			 * a0 初始夹角
+			 * num 当前次数
+			 * max 最大次数(再次经过最低点为一次)
+			 */
+
+			//运动函数
+			var circleParamsA = commonObj.paramsCount("ballA"),
+				circleParamsB = commonObj.paramsCount("ballB"),
+				cirXA = circleParamsA.wideWHalf,
+				cirYA = circleParamsA.highHQuarterHalf,
+				cirXB = circleParamsB.wideWHalf,
+				cirYB = circleParamsB.highHQuarterHalf;
+
+			var test = commonObj.elementID("ballB"),
+				res = commonObj.elementID("reset"),
+				btn1 = commonObj.elementID("btn1"),
+				btn2 = commonObj.elementID("btn2"),
+				btn3 = commonObj.elementID("btn3"),
+				cirR = 473; //运动半径
+
+			res.onclick = function() {
+				//history.go();//页面重定向
+				window.location.reload();
+			}
+
+			btn1.onclick = function() {
+				$(".panel-boxC").html("");
+				commonObj.setTimer("ballB");
+				commonObj.pendulMove({
+					obj: test, //运动对象
+					r: cirR, //运动半径
+					x0: cirXA, //圆心坐标X
+					y0: cirYA, //圆心坐标Y
+					a: 0, //当前夹角
+					num: 0, //当前次数
+				});
+			}
+			btn2.onclick = function() {
+				$(".panel-boxC").html("");
+				commonObj.setTimer("ballB");
+				commonObj.pendulMove({
+					obj: test,
+					r: cirR,
+					dir: '-',
+					x0: cirXA,
+					y0: cirYA,
+					a: test.a,
+					num: 0,
+				});
+			}
+
+			btn3.onclick = function() {
+				commonObj.setTimer("ballB")
+			};
+		</script>
+	</body>
+
+</html>

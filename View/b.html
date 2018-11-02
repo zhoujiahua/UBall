@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+</head>
+<body>
+<button id="btn1">开始运动</button>
+<button id="btn2">暂停</button>
+<button id="reset">还原</button>
+<div id="test" style="height: 100px;width: 100px;background-color: pink;position:absolute;left:0;top: 30px;border-radius:50%"></div>
+<script>
+function getCSS(obj,style){
+    if(window.getComputedStyle){
+        return getComputedStyle(obj)[style];
+    }
+    return obj.currentStyle[style];
+}  
+reset.onclick = function(){history.go();}
+btn2.onclick = function(){
+    clearInterval(test.timer);
+}
+//声明步长值stepY、stepX
+var stepY = 30;
+var stepX = 30;
+btn1.onclick = function(){
+    //声明当前值curY、curX
+    var curY,curX;
+    //声明目标值
+    var targetY = parseFloat('400px');
+    clearInterval(test.timer);
+    test.timer = setInterval(function(){   
+        //更新当前值
+        curY = parseFloat(getCSS(test,'top'));
+        curX = parseFloat(getCSS(test,'left'));
+        //更新步长值
+        stepY -= 1;
+        //当元素返回到初始高度时
+        if(stepY == -30){
+            stepY = 29;
+            stepX = -stepX;
+        }        
+        //更新top、left值
+        test.style.top = curY + stepY + 'px';
+        test.style.left = curX + stepX + 'px';
+	console.log("Y:"+curY+"||"+"X:"+curX);
+    },20);
+}
+</script>    
+</body>
+</html>

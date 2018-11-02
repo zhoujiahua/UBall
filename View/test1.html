@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style>
+			#div1 {
+				width: 20px;
+				height: 20px;
+				background: red;
+				position: absolute;
+				left: 800px;
+				top: 300px;
+			}
+			
+			.box {
+				border: 1px #000 solid;
+				position: absolute;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="div1"></div>
+
+		<script type="text/javascript">
+			var oDiv = document.getElementById('div1');
+			var r = 100; // 半径
+			var x = 300; // 园的中心点 x 坐标
+			var y = 300; // 园的中心点 y 坐标
+
+			var num = 0; // 起始角度
+
+			setInterval(function() {
+
+				num++
+
+				//Math.sin( num*Math.PI/180 ) = a/r;
+				//Math.cos( num*Math.PI/180 ) = b/r;
+
+				// 算出圆周上每一个 A 的 x,y 轴
+				var a = Math.sin(num * Math.PI / 180) * r;
+				var b = Math.cos(num * Math.PI / 180) * r;
+
+				// 算出 圆周上每一个 A 的坐标
+				oDiv.style.left = x + b + 'px';
+				oDiv.style.top = y + a + 'px';
+
+				// 生成 div 就可以看到运动的痕迹
+				var oBox = document.createElement('div');
+				oBox.className = 'box';
+				document.body.appendChild(oBox);
+
+				oBox.style.left = oDiv.offsetLeft + 'px';
+				oBox.style.top = oDiv.offsetTop + 'px';
+
+			}, 30);
+		</script>
+	</body>
+
+</html>

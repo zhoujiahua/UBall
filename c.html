@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.main {
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.panel {
+				/*position: absolute;*/
+				/*border: 1px solid #2A2A2A;*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="header"></div>
+			<div class="main">
+				<canvas id="panel" class="panel"></canvas>
+			</div>
+			<div class="footer"></div>
+		</div>
+
+		<!--JS-->
+		<script src="js/Jquery_v1.9.0.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				var thisParam = getScreenParams();
+				window.onresize = function() {
+					thisParam = getScreenParams();
+				}
+
+				var c = document.getElementById("panel");
+				c.width = document.documentElement.clientWidth;
+				c.height = document.documentElement.clientHeight;
+				if(c.getContext) {
+					var con = c.getContext("2d");
+					con.beginPath();
+					con.arc(300, 300, 150, 0, 2 * Math.PI);
+					con.stroke();
+
+				} else {
+					alert("当前浏览器不支持Canvas！")
+				}
+			})
+			
+			
+			//获取屏幕参数
+			function getScreenParams() {
+				var scrParams = {};
+				scrParams.scrW = document.documentElement.scrollWidth || document.body.scrollWidth,
+					scrParams.scrH = document.documentElement.scrollHeight || document.body.scrollHeight,
+					scrParams.rollW = document.documentElement.offsetWidth || document.body.offsetWidth,
+					scrParams.rollH = document.documentElement.offsetHeight || document.body.offsetHeight;
+				scrParams.offW = document.documentElement.clientWidth;
+				scrParams.offH = document.documentElement.clientHeight;
+
+				return scrParams;
+			}
+		</script>
+	</body>
+
+</html>
