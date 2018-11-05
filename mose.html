@@ -15,7 +15,8 @@
 			.main {
 				position: relative;
 			}
-			.panel-group{
+			
+			.panel-group {
 				position: absolute;
 				bottom: 50px;
 				right: 50px;
@@ -84,9 +85,9 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="panel-group">
-					<button type="button" class="btn-vertical" >垂直碰撞</button>
+					<button type="button" class="btn-vertical">垂直碰撞</button>
 				</div>
 			</div>
 			<div class="header"></div>
@@ -105,7 +106,8 @@
 					leftA = Math.floor((thisA.cW - thisA.caW) * 100 / 2) / 100,
 					topA = Math.floor(((thisA.cH / 4) - thisA.caH) * 100 / 2) / 100,
 					leftB = Math.floor((thisB.cW - thisB.caW) * 100 / 2) / 100,
-					topB = Math.floor((thisB.cH / 4) * 2 - thisB.caH);
+					topB = Math.floor((thisB.cH / 4) * 2 - thisB.caH),
+					time = 600;
 				carA.css({
 					"left": leftA,
 					"top": topA
@@ -125,7 +127,8 @@
 						leftA = Math.floor((thisA.cW - thisA.caW) * 100 / 2) / 100,
 						topA = Math.floor(((thisA.cH / 4) - thisA.caH) * 100 / 2) / 100,
 						leftB = Math.floor((thisB.cW - thisB.caW) * 100 / 2) / 100,
-						topB = Math.floor((thisB.cH / 4) * 2 - thisB.caH);
+						topB = Math.floor((thisB.cH / 4) * 2 - thisB.caH),
+						time = 600;
 					carA.css({
 						"left": leftA,
 						"top": topA
@@ -135,8 +138,7 @@
 						"top": topB
 					});
 				}
-				
-				
+
 				btnVertical.on("click", function() {
 					carA.animate({
 						"left": leftB,
@@ -167,20 +169,47 @@
 						carA.stop().animate({
 							"left": 0,
 							"top": pointer.y,
-						}, function() {
+						}, time, function() {
+							var le = carA.position().left,
+								to = thisTop = carA.position().top;
+							console.log("左移1：" + le + "||" + to)
 							carA.stop().animate({
 								"left": leftA,
-								"top": topA,
+								"top": thisA.cH - thisA.caH,
+							}, time, function() {
+								carA.stop().animate({
+									"left": thisA.cW - thisA.caW,
+									"top": to,
+								}, time, function() {
+									carA.stop().animate({
+										"left": leftA,
+										"top": topA,
+									})
+								})
 							})
+
 						})
 					} else {
 						carA.stop().animate({
 							"left": thisA.cW - thisA.caW,
 							"top": pointer.y,
-						}, function() {
+						}, time, function() {
+							var le = carA.position().left,
+								to = carA.position().top;
+							console.log("右移1：" + le + "||" + to)
 							carA.stop().animate({
 								"left": leftA,
-								"top": topA
+								"top": thisA.cH - thisA.caH
+							}, time, function() {
+								carA.stop().animate({
+									"left": 0,
+									"top": to,
+								}, time, function() {
+									carA.stop().animate({
+										"left": leftA,
+										"top": topA,
+									})
+								})
 							})
 						})
 					}
@@ -188,7 +217,7 @@
 				})
 
 			})
-			
+
 			//获取鼠标参数
 			function getCoordInDocumentExample() {
 				var coords = document.getElementById("coords");
