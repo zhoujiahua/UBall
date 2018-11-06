@@ -20,7 +20,7 @@
 	</head>
 
 	<body>
-		<div id="ball"></div>
+		<div id="ball" class="c-ball"></div>
 
 		<script>
 			var oBall = document.querySelector('#ball'),
@@ -37,24 +37,23 @@
 				topMax = document.documentElement.clientHeight - 80;
 			}
 
-			creatBall(oBall, 10); //传参，往oBall里面追加10个小球
-			aBall = oBall.children; //获取oBall里面的所有小球
-			length = aBall.length;
+			creatBall(oBall, 2); //传参，往oBall里面追加10个小球
 
-			function creatBall(obj, num) { //创建小球的function
-				for(var i = 0; i < num; i++) {
-					var cBall = document.createElement('div');
-					cBall.className = 'ball';
-					ballBg(cBall);
-					cBall.leftNum = cBall.topNum = (i + 1) * 1; //这里去i+1而不取i的原因是，一个小球的i为0，如果不取i+1，那么第一个小球会永远在左上角不动并且不停地变颜色
-					obj.appendChild(cBall);
-				};
-			};
+			aBall = oBall.children; //获取oBall里面的所有小球
+			length = aBall.length; //获取小球的个数
+			
+			setInterval(function() {
+				for(var j = 0; j < length; j++) {
+					var item = aBall[j];
+					console.log('小球' + j + ":Left:" + item.leftNum + "Top:" + item.topNum + "简介:"+item.intro+'');
+				}
+			}, 30)
 
 			setInterval(function() { //这里注意需要将之前所有对oBall设置的都换成aBall[i]
 				for(var i = 0; i < length; i++) {
 					var Left = aBall[i].offsetLeft + aBall[i].leftNum,
 						Top = aBall[i].offsetTop + aBall[i].topNum;
+						
 					if(Left >= leftMax) {
 						Left = leftMax;
 						aBall[i].leftNum = -aBall[i].leftNum;
@@ -78,6 +77,20 @@
 				}
 			}, 30);
 
+			//创建小球的方法
+			function creatBall(obj, num) {
+				for(var i = 0; i < num; i++) {
+					var cBall = document.createElement('div');
+					cBall.className = 'ball';
+					cBall.intro = "你是猪吗？";
+					ballBg(cBall);
+					//这里取i+1而不取i的原因是，一个小球的i为0，如果不取i+1，那么第一个小球会永远在左上角不动并且不停地变颜色
+					cBall.leftNum = cBall.topNum = (i + 1) * 1;
+					obj.appendChild(cBall);
+				};
+			};
+
+			//小球随机颜色
 			function ballBg(obj) {
 				var r = Math.floor(Math.random() * 256);
 				g = Math.floor(Math.random() * 256);

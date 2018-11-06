@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>小球运动</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.wrapper,
+			.main,
+			.coords-box {
+				position: relative;
+				width: 100%;
+				height: 100vh;
+				overflow: hidden;
+			}
+			
+			.btn-group {
+				position: absolute;
+				bottom: 50px;
+				right: 50px;
+				z-index: 8;
+			}
+			
+			.coord {
+				position: absolute;
+				z-index: 6;
+			}
+			
+			.ball {
+				width: 80px;
+				height: 80px;
+				background: red;
+				border-radius: 50%;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="header">
+				<div class="btn-group">
+					<button type="button" id="stop">停止</button>
+					<button type="button" id="reset">重置</button>
+				</div>
+			</div>
+			<div class="main">
+				<div id="coords" class="coords-box">
+					<div id="coord" class="coord"></div>
+					<div id="panel"></div>
+				</div>
+			</div>
+			<div class="footer"></div>
+		</div>
+
+		<!--JS-->
+		<script src="js/go.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			(function() {
+				var thisNum = go.speenParam(),
+					oBall = go.el('panel'),
+					oStop = go.el("stop"),
+					oReset = go.el("reset"),
+					oClick = go.el("ball1"),
+					leftNum = 0,
+					topNum = 0,
+					aBall = null,
+					length = 0,
+					timer = null;
+
+				getCoordInDocumentExample();
+
+				//随机背景色
+				document.body.style.backgroundColor = go.rundomColor();
+
+				//窗口改变监听
+				reSize();
+				window.onresize = reSize;
+
+				function reSize() {
+					leftMax = thisNum.spW - 80;
+					topMax = thisNum.spH - 80;
+				}
+
+				oStop.addEventListener("click", function() {
+					go.clearTimer(timer, 2);
+				})
+				oReset.addEventListener("click", function() {
+					window.location.reload();
+				})
+
+				go.el("coords").onclick = function(e) {
+					var pointer = go.getCoordInDocument(e),
+						ball1 = go.el("ball1");
+					ball1.style.left = pointer.x + "px";
+					ball1.style.top = pointer.y + "px";
+				}
+
+				creatBall(oBall, 2); //传参，往oBall里面追加10个小球
+
+				aBall = oBall.children; //获取oBall里面的所有小球
+				length = aBall.length; //获取小球的个数
+
+				timer = setInterval(function() { //这里注意需要将之前所有对oBall设置的都换成aBall[i]
+					for(var i = 0; i < length; i++) {
+						var Left = aBall[i].offsetLeft + aBall[i].leftNum,
+							Top = aBall[i].offsetTop + aBall[i].topNum;
+
+						if(Left >= leftMax) {
+							Left = leftMax;
+							aBall[i].leftNum = -aBall[i].leftNum;
+							ballBg(aBall[i]);
+						} else if(Left <= 0) {
+							Left = 0;
+							aBall[i].leftNum = -aBall[i].leftNum;
+							ballBg(aBall[i]);
+						};
+						if(Top >= topMax) {
+							Top = topMax;
+							aBall[i].topNum = -aBall[i].topNum;
+							ballBg(aBall[i]);
+						} else if(Top <= 0) {
+							Top = 0;
+							aBall[i].topNum = -aBall[i].topNum;
+							ballBg(aBall[i]);
+						};
+						aBall[i].style.left = Left + 'px';
+						aBall[i].style.top = Top + 'px';
+					}
+				}, 20);
+
+				//创建小球的方法
+				function creatBall(obj, num) {
+					for(var i = 0; i < num; i++) {
+						var cBall = document.createElement('div');
+						cBall.className = 'ball';
+						cBall.intro = "你是猪吗？";
+						cBall.setAttribute("id", "ball" + i);
+						ballBg(cBall);
+						//这里取i+1而不取i的原因是，一个小球的i为0，如果不取i+1，那么第一个小球会永远在左上角不动并且不停地变颜色
+						cBall.leftNum = cBall.topNum = (i + 1) * 1;
+						obj.appendChild(cBall);
+					};
+				};
+
+				//小球随机颜色
+				function ballBg(obj) {
+					obj.style.backgroundColor = go.rundomColor();
+				}
+
+				//展示鼠标参数
+				function getCoordInDocumentExample() {
+					var coords = go.el("coords");
+					coords.onmousemove = function(e) {
+						var pointer = go.getCoordInDocument(e),
+							coord = go.el("coord");
+						coord.style.left = pointer.x + "px";
+						coord.style.top = pointer.y + "px";
+						//coord.style.width = 110 + "px";
+						coord.style.padding = 5 + "px";
+						coord.style.border = "1px solid #336699";
+						coord.style.borderColor = go.rundomColor();
+						coord.innerHTML = 'X:' + pointer.x + ', Y:' + pointer.y;
+					}
+				}
+
+			}())
+		</script>
+	</body>
+
+</html>
